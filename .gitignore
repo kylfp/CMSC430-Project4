@@ -1,0 +1,7 @@
+compile
+*.o
+*.c
+parser.output
+parser.tab.h
+tokens.h
+.clangd
