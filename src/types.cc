@@ -1,7 +1,7 @@
+// Kyle Fiori-Puyu
 // CMSC 430 Compiler Theory and Design
-// Project 4 Skeleton
-// UMGC CITE
-// Summer 2023
+// Project 4
+// 2024-08-06
 
 // This file contains the bodies of the type checking functions
 
@@ -35,6 +35,13 @@ void checkAssignment(Types lValue, Types rValue, string message) {
   }
 }
 
+void checkDuplicate(Types identifier, string name) {
+  if (identifier == MISMATCH) {
+    appendError(GENERAL_SEMANTIC, "Duplicate declaration of " + name);
+  }
+  return;
+}
+
 void checkListAssignment(Types listType, Types list, string message) {
 	if (listType != MISMATCH && list != MISMATCH && listType != list)
 		appendError(GENERAL_SEMANTIC, "Type Mismatch on " + message);
@@ -55,6 +62,9 @@ Types checkNumericType(Types expression, string message) {
 }
 
 void checkRelTypes(Types left, Types right) {
+  if (left == MISMATCH || right == MISMATCH) {
+    return;
+  }
   if ((left == CHAR_TYPE && right != CHAR_TYPE) || (left != CHAR_TYPE && right == CHAR_TYPE)) {
     appendError(GENERAL_SEMANTIC, "Character Literals cannot be compared to numeric expressions");
   }
@@ -62,10 +72,13 @@ void checkRelTypes(Types left, Types right) {
 
 // When Statements
 Types checkWhen(Types true_, Types false_) {
-	if (true_ == MISMATCH || false_ == MISMATCH)
+	if (true_ == MISMATCH || false_ == MISMATCH) {
 		return MISMATCH;
-	if (true_ != false_)
+  }
+	if (true_ != false_) {
 		appendError(GENERAL_SEMANTIC, "When Types Mismatch ");
+    return MISMATCH;
+  }
 	return true_;
 }
 

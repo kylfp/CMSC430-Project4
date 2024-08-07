@@ -1,10 +1,9 @@
+// Kyle Fiori-Puyu
 // CMSC 430 Compiler Theory and Design
-// Project 4 Skeleton
-// UMGC CITE
-// Summer 2023
+// Project 4
+// 2024-08-06
 
-// This file contains the bodies of the functions that produces the 
-// compilation listing
+// This file contains the bodies of the functions that produces the compilation listing
 
 #include <cstdio>
 #include <string>

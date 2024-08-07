@@ -1,16 +1,16 @@
+// Kyle Fiori-Puyu
 // CMSC 430 Compiler Theory and Design
-// Project 4 Skeleton
-// UMGC CITE
-// Summer 2023
+// Project 4
+// 2024-08-06
 
-// This file contains type definitions and the function
-// prototypes for the type checking functions
+// This file contains type definitions and the function prototypes for the type checking functions
 
 typedef char* CharPtr;
 
 enum Types {MISMATCH, INT_TYPE, REAL_TYPE, CHAR_TYPE, NONE};
 
 void checkAssignment(Types lValue, Types rValue, string message);
+void checkDuplicate(Types identifier, string name);
 void checkListAssignment(Types listType, Types list, string message);
 void checkType(Types expression, Types desired, string message);
 Types checkNumericType(Types expression, string message);

@@ -1,9 +1,10 @@
-/* CMSC 430 Compiler Theory and Design
-   Project 4 Skeleton
-   UMGC CITE
-   Summer 2023 */
-
-/* This file contains flex input file */
+/* Kyle Fiori-Puyu
+ * CMSC 430 Compiler Theory and Design
+ * Project 4
+ * 2024-08-06
+ *
+ * This file contains flex input file
+*/
 
 %{
 #include <cstdio>

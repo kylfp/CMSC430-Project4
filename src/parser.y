@@ -1,9 +1,11 @@
-/* CMSC 430 Compiler Theory and Design
-   Project 4 Skeleton
-   UMGC CITE
-   Summer 2023
-
-   Project 4 Parser with semantic actions for static semantic errors */
+/*
+ * Kyle Fiori-Puyu
+ * CMSC 430 Compiler Theory and Design
+ * Project 4
+ * 2024-08-06
+ *
+ * Project 4 Parser with semantic actions for static semantic errors
+ */
 
 %{
 #include <string>
@@ -18,6 +20,7 @@ using namespace std;
 
 int yylex();
 Types find(Symbols<Types>& table, CharPtr identifier, string tableName);
+Types findDuplicate(Symbols<Types>& table, CharPtr identifier);
 void yyerror(const char* message);
 
 Symbols<Types> scalars;
@@ -51,8 +54,7 @@ function:
 	function_header_ variables body {checkAssignment($1, $3, "of function return");} ;
 
 function_header_:
-  function_header ';' {$$ = $1;} |
-  error ';' ;
+  function_header ';' {$$ = $1;} ;
 
 function_header:
 	FUNCTION IDENTIFIER optional_parameters RETURNS type {$$ = $5;} ;
@@ -82,8 +84,8 @@ variable_:
   error ';' ;
 
 variable:
-	IDENTIFIER ':' type IS statement {checkAssignment($3, $5, "Variable Initialization"); scalars.insert($1, $3);} |
-	IDENTIFIER ':' LIST OF type IS list {checkListAssignment($5, $7, "List Initialization"); lists.insert($1, $5);} ;
+	IDENTIFIER ':' type IS statement {checkAssignment($3, $5, "Variable Initialization"); checkDuplicate(findDuplicate(scalars, $1), $1); scalars.insert($1, $3);} |
+	IDENTIFIER ':' LIST OF type IS list {checkListAssignment($5, $7, "List Initialization"); checkDuplicate(findDuplicate(lists, $1), $1); lists.insert($1, $5);} ;
 
 list:
 	'(' expressions ')' {$$ = $2;} ;
@@ -118,8 +120,7 @@ cases:
 	%empty {$$ = NONE;} ;
 
 case_:
-  case ';' |
-  error ';' ;
+  case ';' ;
 
 case:
 	CASE INT_LITERAL ARROW statement {$$ = $4;} ;
@@ -134,8 +135,8 @@ operator:
   EXPOP ;
 
 list_choice:
-  list {$$ = $1;}|
-  IDENTIFIER ;
+  list {$$ = $1;} |
+  IDENTIFIER {$$ = find(lists, $1, "List");} ;
 
 condition:
 	condition OROP conjunct |
@@ -187,6 +188,14 @@ Types find(Symbols<Types>& table, CharPtr identifier, string tableName) {
 		return MISMATCH;
 	}
 	return type;
+}
+
+Types findDuplicate(Symbols<Types>& table, CharPtr identifier) {
+	Types type;
+	if (table.find(identifier, type)) {
+		return MISMATCH;
+	}
+	return NONE;
 }
 
 void yyerror(const char* message) {

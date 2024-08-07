@@ -1,7 +1,7 @@
+// Kyle Fiori-Puyu
 // CMSC 430 Compiler Theory and Design
-// Project 4 Skeleton
-// UMGC CITE
-// Summer 2023
+// Project 4
+// 2024-08-06
 
 // This file contains the template symbol table
 
